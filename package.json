@@ -1,0 +1,44 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "tsx watch main.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@fastify/cookie": "^11.0.2",
+    "@fastify/cors": "^11.2.0",
+    "@prisma/client": "^6.15.0",
+    "argon2": "^0.44.0",
+    "dotenv": "^17.2.1",
+    "fastify": "^5.5.0",
+    "fastify-plugin": "^5.0.1",
+    "form-data": "^4.0.5",
+    "ioredis": "^5.7.0",
+    "jsonwebtoken": "^9.0.2",
+    "knex": "^3.1.0",
+    "mailgun.js": "^12.3.0",
+    "nodemailer": "^7.0.11",
+    "pg": "^8.16.3",
+    "redis": "^5.8.2",
+    "socket.io": "^4.8.1"
+  },
+  "devDependencies": {
+    "@types/form-data": "^2.2.1",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^24.3.0",
+    "@types/nodemailer": "^7.0.4",
+    "json-schema-to-ts": "^3.1.1",
+    "nodemon": "^3.1.10",
+    "prisma": "^6.15.0",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.20.5",
+    "typescript": "^5.9.2"
+  }
+}

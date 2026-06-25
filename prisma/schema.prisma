@@ -1,0 +1,55 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          Int       @id @default(autoincrement())
+  name        String
+  email       String    @unique
+  phoneNumber String    @unique
+  password    String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  sosRequests SOSRequest[]
+  locations   Location[]
+  contacts    EmergencyContact[]
+}
+
+model SOSRequest {
+  id          Int       @id @default(autoincrement())
+  userId      Int
+  status      String    @default("ACTIVE")
+  triggeredAt DateTime  @default(now())
+
+  user       User     @relation(fields: [userId], references: [id])
+  locations  Location[]
+}
+
+model Location {
+  id         Int       @id @default(autoincrement())
+  userId     Int
+  sosId      Int?
+  latitude   Float
+  longitude  Float
+  createdAt  DateTime  @default(now())
+
+  user       User      @relation(fields: [userId], references: [id])
+  sosRequest SOSRequest? @relation(fields: [sosId], references: [id])
+}
+
+model EmergencyContact {
+  id        Int       @id @default(autoincrement())
+  userId    Int
+  name      String
+  phone     String
+  relation  String
+  createdAt DateTime  @default(now())
+
+  user      User @relation(fields: [userId], references: [id])
+}
