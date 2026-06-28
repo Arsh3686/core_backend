@@ -5,17 +5,23 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "tsx watch main.ts"
+    "dev": "tsx watch main.ts",
+    "pull": "git checkout main && git pull && git submodule update --init --recursive && git submodule foreach git checkout main && git submodule foreach git pull origin main && npm install",
+    "ingest": "tsx rag/ingest.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@chroma-core/default-embed": "^0.1.9",
     "@fastify/cookie": "^11.0.2",
     "@fastify/cors": "^11.2.0",
+    "@langchain/google-genai": "^2.2.0",
+    "@langchain/groq": "^1.3.1",
     "@prisma/client": "^6.15.0",
     "argon2": "^0.44.0",
+    "chromadb": "^3.4.3",
     "dotenv": "^17.2.1",
     "fastify": "^5.5.0",
     "fastify-plugin": "^5.0.1",
@@ -23,8 +29,9 @@
     "ioredis": "^5.7.0",
     "jsonwebtoken": "^9.0.2",
     "knex": "^3.1.0",
+    "langchain": "^1.5.2",
     "mailgun.js": "^12.3.0",
-    "nodemailer": "^7.0.11",
+    "nodemailer": "^9.0.1",
     "pg": "^8.16.3",
     "redis": "^5.8.2",
     "socket.io": "^4.8.1"

@@ -7,7 +7,7 @@ import { generateTokens } from "@core/utils/tokens";
 import { ControllerError } from "@core/errors/BasicError";
 import { hashPassword, verifyPassword } from "@core/utils/password-hashing";
 import { generateOTP } from "@core/core_services/email";
-import { sendEmail } from "@core/core_services/mailgun";
+// import { sendEmail } from "@core/core_services/mailgun";
 import jwt from "jsonwebtoken";
 
 const CREATE_USER = async (req: FastifyRequest<CREATE_USER_SCHEMA_TYPE>, reply: FastifyReply) => {
@@ -186,7 +186,7 @@ const FORGOT_PASSWORD = async (req: FastifyRequest<FORGET_PASSWORD_TYPE>, reply:
             return reply.status(404).send({ message: 'User not found' });
         }
         const OTP = generateOTP();
-        await sendEmail(result.data.email, "Forgot Password", OTP);
+        // await sendEmail(result.data.email, "Forgot Password", OTP);
         await req.redis.set(`otp_${result.data.username}`, OTP, "EX", 600);
 
         return reply.send({ message: 'Auth route is working', data: [] });

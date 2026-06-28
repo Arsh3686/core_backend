@@ -7,7 +7,7 @@ import { generateTokens } from "@core/utils/tokens";
 import { ControllerError } from "@core/errors/BasicError";
 import { hashPassword, verifyPassword } from "@core/utils/password-hashing";
 import { generateOTP } from "@core/core_services/email";
-import { sendEmail } from "@core/core_services/mailgun";
+// import { sendEmail } from "@core/core_services/mailgun";
 import jwt from "jsonwebtoken";
 
 const CREATE_USER = async (req: FastifyRequest<CREATE_USER_SCHEMA_TYPE>, reply: FastifyReply) => {
