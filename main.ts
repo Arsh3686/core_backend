@@ -58,10 +58,10 @@ const start = async () => {
     registerRoutes(server);
     await ingestDocuments()
 
-    await server.listen({ port: 3901, host: "0.0.0.0" });
-    console.log("Server is running at port 3901");
+    await server.listen({ port: Number(process.env.PORT) });
+    console.log(`Server is running at port ${process.env.PORT}`);
 
-    setupSocket(server);
+    // setupSocket(server);
 
   } catch (error) {
     server.log.error(error);
