@@ -1,7 +1,7 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
-import { findNearbyUsers, searchUsersWithinLocation } from "../services/search-and-find-services";
-import type { FIND_USERS_IN_RANGE_TYPE } from "../types/searc-and-find-types";
-import { getDistanceInMeters } from "@core/helper/core-helper";
+import { findNearbyUsers, searchUsersWithinLocation } from "../services/search-and-find-services.js";
+import type { FIND_USERS_IN_RANGE_TYPE } from "../types/searc-and-find-types.js";
+import { getDistanceInMeters } from "@core/helper/core-helper.js";
 
 async function GET_USERS(req: FastifyRequest, reply: FastifyReply) {
     try {

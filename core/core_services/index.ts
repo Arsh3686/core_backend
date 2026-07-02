@@ -1,8 +1,8 @@
-import { verifyAccessToken, verifyRefreshToken } from "@core/utils/tokens"
+import { verifyAccessToken, verifyRefreshToken } from "@core/utils/tokens.js"
 import fastify, { type FastifyInstance } from "fastify"
 
-const addHooks = ( app: FastifyInstance ) => {
-    
+const addHooks = (app: FastifyInstance) => {
+
 
     app.addHook('onRequest', (req, reply) => {
         return verifyAccessToken(req);

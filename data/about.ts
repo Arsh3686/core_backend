@@ -1,4 +1,5 @@
 export const portfolioData = {
+    is_present: "Yes",
     resume: {
         url: "https://drive.google.com/uc?export=download&id=1wJnPPv6yOXV6XEqphEhOI23ujnlObmai"
     },

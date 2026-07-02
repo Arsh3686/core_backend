@@ -1,5 +1,5 @@
 import type { FromSchema } from "json-schema-to-ts";
-import { FIND_USERS_IN_RANGE_SCHEMA } from "../schemas/search-and-find-schema"
+import { FIND_USERS_IN_RANGE_SCHEMA } from "../schemas/search-and-find-schema.js"
 
 export type FIND_USERS_IN_RANGE_TYPE = {
     Body: FromSchema<typeof FIND_USERS_IN_RANGE_SCHEMA.body>,

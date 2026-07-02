@@ -1,4 +1,4 @@
-import { CentralizedError } from "./CentralizedError";
+import { CentralizedError } from "./CentralizedError.js";
 
 // message: string, statusCode: number, typeOfError: string, details: any, cause: any
 

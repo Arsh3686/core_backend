@@ -1,4 +1,4 @@
-import { DatabaseError } from "@core/errors/BasicError";
+import { DatabaseError } from "@core/errors/BasicError.js";
 import type { Knex } from "knex";
 
 const INSERT_DATA_IN_TABLE = async (knex: Knex, payload: any, table: string, returing?: string) => {

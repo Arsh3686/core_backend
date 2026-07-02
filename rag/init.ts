@@ -1,6 +1,7 @@
-import { convertPortfolioToDocuments } from "./document";
-import { embeddings } from "../config/ai_config";
-import { chromadbClient, getCollection } from "./chroma";
+import { convertPortfolioToDocuments } from "./document.js";
+import { embeddings } from "../config/ai_config.js";
+import { chromadbClient, getCollection } from "./chroma.js";
+import { pinecone_index, vectorStore } from "./pinecone.js";
 
 const initializeVectorStore = async () => {
     try {
@@ -16,26 +17,61 @@ const initializeVectorStore = async () => {
     }
 }
 
-async function ingestDocuments() {
-    try {
-        const docs = convertPortfolioToDocuments();
-        const collection = await getCollection('portfolio');
+// async function ingestDocumentsByChroma() {
+//     try {
+//         const docs = convertPortfolioToDocuments();
+//         const collection = await getCollection('portfolio');
 
-        const count = await collection.count();
-        if (count > 0) {
+//         const count = await collection.count();
+//         if (count > 0) {
+//             console.log("Documents already exist.");
+//             return { success: true };
+//         }
+//         const vectors = await Promise.all(
+//             docs.map((doc) => embeddings.embedQuery(doc.pageContent))
+//         );
+
+//         await collection.add({
+//             ids: docs.map((d) => String(d.metadata.id!)),
+//             documents: docs.map((d) => d.pageContent),
+//             metadatas: docs.map((d) => d.metadata),
+//             embeddings: vectors,
+//         });
+
+//         console.log("Documents inserted.");
+//         return { success: true };
+//     } catch (error) {
+//         return error;
+//     }
+// }
+
+async function ingestDocumentsByPinecone() {
+    try {
+        const { docs, ids } = convertPortfolioToDocuments();
+        // const vectorStores = await vectorStore.asRetriever()
+
+        // const count = await vectorStore.();
+        // if (count > 0) {
+        //     console.log("Documents already exist.");
+        //     return { success: true };
+        // }
+        // const vectors = await Promise.all(
+        //     docs.map((doc) => embeddings.embedQuery(doc.pageContent))
+        // );
+        const indexDetails = await pinecone_index.fetch(['skills'])
+
+        if (Object.keys(indexDetails.records).length > 0) {
             console.log("Documents already exist.");
             return { success: true };
+        } else {
+            await vectorStore.addDocuments(docs, { ids });
         }
-        const vectors = await Promise.all(
-            docs.map((doc) => embeddings.embedQuery(doc.pageContent))
-        );
 
-        await collection.add({
-            ids: docs.map((d) => String(d.metadata.id!)),
-            documents: docs.map((d) => d.pageContent),
-            metadatas: docs.map((d) => d.metadata),
-            embeddings: vectors,
-        });
+        //     ids: docs.map((d) => String(d.metadata.id!)),
+        //     documents: docs.map((d) => d.pageContent),
+        //     metadatas: docs.map((d) => d.metadata),
+        //     embeddings: vectors,
+        // });
 
         console.log("Documents inserted.");
         return { success: true };
@@ -44,4 +80,4 @@ async function ingestDocuments() {
     }
 }
 
-export { initializeVectorStore, ingestDocuments }
+export { initializeVectorStore, ingestDocumentsByPinecone }

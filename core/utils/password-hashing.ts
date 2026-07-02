@@ -1,4 +1,4 @@
-import { AuthError } from "@core/errors/BasicError";
+import { AuthError } from "@core/errors/BasicError.js";
 import argon2 from "argon2";
 import type { FastifyRequest } from "fastify";
 

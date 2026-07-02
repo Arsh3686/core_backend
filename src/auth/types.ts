@@ -1,5 +1,5 @@
 import type { FromSchema } from "json-schema-to-ts";
-import type { CREATE_USER_SCHEMA, FORGET_PASSWORD_SCHEMA, LOGIN_USER_SCHEMA, ME_USER_SCHEMA, RESET_PASSWORD_SCHEMA } from "./schemas/auth-schemas";
+import type { CREATE_USER_SCHEMA, FORGET_PASSWORD_SCHEMA, LOGIN_USER_SCHEMA, ME_USER_SCHEMA, RESET_PASSWORD_SCHEMA } from "./schemas/auth-schemas.js";
 
 export type CREATE_USER_SCHEMA_TYPE = {
     Body: FromSchema<typeof CREATE_USER_SCHEMA.body>

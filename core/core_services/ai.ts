@@ -1,5 +1,5 @@
-import { model } from 'config/ai_config';
-import { SYSTEM_PROMPT } from 'data/about';
+import { model } from 'config/ai_config.js';
+import { SYSTEM_PROMPT } from 'data/about.js';
 import fs from 'fs/promises';
 import { AIMessage, HumanMessage, SystemMessage } from 'langchain';
 

@@ -1,8 +1,8 @@
 import type {
   BuildDynamicQueryParams,
   defaultResponseType,
-} from "@core/core-types";
-import { DatabaseError } from "@core/errors/BasicError";
+} from "@core/core-types.js";
+import { DatabaseError } from "@core/errors/BasicError.js";
 import type { Knex } from "knex";
 
 const buildDynamicQuery = async (

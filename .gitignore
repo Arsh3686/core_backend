@@ -41,6 +41,7 @@ package-lock.json
 testem.log
 /typings
 .env
+.env.local
 # System files
 .DS_Store
 Thumbs.db

@@ -1,14 +1,15 @@
-import "./config/env";
+import "./config/env.js";
 import fastify, { type FastifyReply, type FastifyRequest } from "fastify";
-import dbPlugins from "./core/plugins/db-plugins";
-import redisPlugins from "./core/plugins/redis-plugins";
-import { setupSocket } from "./core/socket/setup";
-import registerRoutes from "./routes";
+import dbPlugins from "@core/plugins/db-plugins.js";
+// import redisPlugins from "./core/plugins/redis-plugins";
+import redisPlugins from "@core/plugins/redis-plugins.js";
+import { setupSocket } from "@core/socket/setup.js";
+import registerRoutes from "./routes.js";
 import cookie from "@fastify/cookie";
 import cors from "@fastify/cors";
-import { verifyAccessToken } from "./core/utils/tokens";
-import { AuthError } from "@core/errors/BasicError";
-import { ingestDocuments } from "rag/init";
+import { verifyAccessToken } from "@core/utils/tokens.js";
+import { AuthError } from "@core/errors/BasicError.js";
+import { ingestDocumentsByPinecone } from "rag/init.js";
 
 
 const start = async () => {
@@ -21,7 +22,7 @@ const start = async () => {
       hook: 'onRequest',
       parseOptions: {}
     });
-    server.register(dbPlugins);
+    // server.register(dbPlugins);
     server.register(redisPlugins);
 
     server.addHook("onRequest", async (req: FastifyRequest, reply: FastifyReply) => {
@@ -56,15 +57,16 @@ const start = async () => {
     })
 
     registerRoutes(server);
-    await ingestDocuments()
+    await ingestDocumentsByPinecone()
 
-    await server.listen({ port: Number(process.env.PORT) });
-    console.log(`Server is running at port ${process.env.PORT}`);
+    await server.listen({ port: Number(process.env.PORT), host: "0.0.0.0" });
+    console.log(`Server is running at port ${process.env.PORT} on host 0.0.0.0`);
 
     // setupSocket(server);
 
   } catch (error) {
     server.log.error(error);
+    console.log(error);
     process.exit(1);
   }
 };

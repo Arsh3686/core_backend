@@ -1,6 +1,6 @@
 import fp from "fastify-plugin";
 import knex from "knex";
-import config from "../../config/db-config";
+import config from "../../config/db-config.js";
 
 export default fp(async (fastify) => {
 

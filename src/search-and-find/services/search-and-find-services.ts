@@ -1,5 +1,5 @@
 import type { Knex } from "knex";
-import { DatabaseError } from '@core/errors/BasicError';
+import { DatabaseError } from '@core/errors/BasicError.js';
 
 const searchUsersWithinLocation = async (knex: Knex) => {
     try {

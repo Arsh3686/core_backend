@@ -1,9 +1,9 @@
 import { type FastifyInstance } from "fastify";
-import SearchAndFindRoutes from './src/search-and-find'
-import AuthRoutes from './src/auth'
-import WalletRoutes from './src/wallet'
-import CollectionsRoutes from './src/collections'
-import ChatRoutes from './src/chat'
+// import SearchAndFindRoutes from './src/search-and-find'
+// import AuthRoutes from './src/auth'
+// import WalletRoutes from './src/wallet'
+// import CollectionsRoutes from './src/collections'
+import ChatRoutes from '@/chat/index.js'
 
 const registerRoutes = (fastify: FastifyInstance) => {
     // fastify.register(SearchAndFindRoutes, { prefix: '/api/v1/search' });

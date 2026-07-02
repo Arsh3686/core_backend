@@ -1,4 +1,4 @@
-import { AuthError } from "@core/errors/BasicError";
+import { AuthError } from "@core/errors/BasicError.js";
 import type { FastifyReply, FastifyRequest } from "fastify";
 import jwt, { type SignOptions } from "jsonwebtoken"
 
@@ -8,7 +8,7 @@ const refreshSecret = process.env.REFRESH_TOKEN_SECRET!;
 type returnType = {
   accessToken?: string;
   refreshToken?: string;
-  error ?: Error | undefined;
+  error?: Error | undefined;
 }
 
 type verifyReturnType = {
@@ -27,8 +27,8 @@ const generateTokens = (payload: object): returnType => {
     const jti = crypto.randomUUID();
 
     return {
-      accessToken: generateAccessToken({...payload, jti}),
-      refreshToken: generateRefreshToken({...payload, jti}),
+      accessToken: generateAccessToken({ ...payload, jti }),
+      refreshToken: generateRefreshToken({ ...payload, jti }),
       error: undefined
     };
   } catch (error) {
@@ -52,46 +52,46 @@ function generateRefreshToken(payload: object) {
   return jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET!, options);
 }
 
-async function verifyAccessToken(request : FastifyRequest): Promise<verifyReturnType> {
+async function verifyAccessToken(request: FastifyRequest): Promise<verifyReturnType> {
   try {
-   console.log("Verify Access token on onRequest hook for endpoint", request.url);
-  
-  if(!request.headers.authorization){
-    throw new AuthError("Authorization headers missing", new Error("Authorization headers missing"));
-  }
+    console.log("Verify Access token on onRequest hook for endpoint", request.url);
 
-  if(request.headers.authorization?.split(" ")[0] !== "Bearer" || request.headers.authorization?.split(" ").length !== 2){
-    throw new AuthError("Unauthorized", new Error("Invalid token"));
-  }
+    if (!request.headers.authorization) {
+      throw new AuthError("Authorization headers missing", new Error("Authorization headers missing"));
+    }
 
-  const token = request.headers.authorization?.split(' ')[1] as string
-  const isValidToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET!) as any;
+    if (request.headers.authorization?.split(" ")[0] !== "Bearer" || request.headers.authorization?.split(" ").length !== 2) {
+      throw new AuthError("Unauthorized", new Error("Invalid token"));
+    }
 
-  if(!isValidToken){
-    throw new AuthError("Unauthorized", isValidToken);
-  }
+    const token = request.headers.authorization?.split(' ')[1] as string
+    const isValidToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET!) as any;
 
-  if(isValidToken instanceof Error){
-    throw new AuthError("Unauthorized", isValidToken); 
-  }
+    if (!isValidToken) {
+      throw new AuthError("Unauthorized", isValidToken);
+    }
 
-  const jti = isValidToken.jti;
+    if (isValidToken instanceof Error) {
+      throw new AuthError("Unauthorized", isValidToken);
+    }
 
-  const isLogout = await request.redis.get(`logout_${jti}`);
-  if(isLogout){
-    throw new AuthError("Token expired", isLogout);
-  }
+    const jti = isValidToken.jti;
 
-  return { userInfo: isValidToken.userInfo || {}, error: undefined }; 
+    const isLogout = await request.redis.get(`logout_${jti}`);
+    if (isLogout) {
+      throw new AuthError("Token expired", isLogout);
+    }
+
+    return { userInfo: isValidToken.userInfo || {}, error: undefined };
   } catch (error) {
     throw new AuthError("Invalid token", error);
   }
 }
 
-function verifyRefreshToken(request : FastifyRequest) {
+function verifyRefreshToken(request: FastifyRequest) {
   console.log("Verify Refresh token on onRequest hook for endpoint", request.url);
-  
-  if(!request.cookies.refreshToken){
+
+  if (!request.cookies.refreshToken) {
     throw new Error("Refresh token missing");
   }
 

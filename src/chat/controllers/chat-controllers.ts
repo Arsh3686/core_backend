@@ -1,8 +1,9 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
-import type { CHAT_WITH_USER_SCHEMA_TYPE } from "../types";
-import { getAIResponses, loadContext, saveContext } from "@core/core_services/ai";
-import { embeddings } from "config/ai_config";
-import { getCollection } from "rag/chroma";
+import type { CHAT_WITH_USER_SCHEMA_TYPE } from "../types.js";
+import { getAIResponses, loadContext, saveContext } from "@core/core_services/ai.js";
+import { embeddings } from "config/ai_config.js";
+import { getCollection } from "rag/chroma.js";
+import { pinecone_index, vectorStore } from "rag/pinecone.js";
 
 const CHAT_WITH_USER = async (request: FastifyRequest<CHAT_WITH_USER_SCHEMA_TYPE>, reply: FastifyReply) => {
   {
@@ -15,21 +16,26 @@ const CHAT_WITH_USER = async (request: FastifyRequest<CHAT_WITH_USER_SCHEMA_TYPE
     try {
       const context = await loadContext('123');
       // embed the query first
-      const queryEmbedding = await embeddings.embedQuery(
-        "What's your qualification?"
-      );
-
+      // const queryEmbedding = await embeddings.embedQuery(
+      //   message
+      // );
+      // vectorStore.similaritySearch(queryEmbedding)
       // fetch collection details
-      const collection = await getCollection('portfolio')
+      // const collection = await getCollection('portfolio')
 
       // similarity search
-      const results = await collection.query({
-        queryEmbeddings: [queryEmbedding],
-        nResults: 3
-      })
-      console.log(results.documents);
+      // const results = await pinecone_index.query({
+      //   vector: queryEmbedding,
+      //   topK: 10,
+      //   includeValues: true,
+      //   includeMetadata: true
+      // })
+      // console.log(results.matches, { depth: null });
+      // const stats = await pinecone_index.describeIndexStats();
 
-      const aiReply = await getAIResponses(message, results?.documents?.[0]?.join("\n\n") || '', context);
+      const results = await vectorStore.similaritySearch(message, 100);
+      console.log(results)
+      const aiReply = await getAIResponses(message, results?.map(doc => doc.pageContent)?.join("\n\n") || '', context);
 
       context.push({ role: "human", content: message }, { role: "ai", content: aiReply })
       saveContext('123', context);

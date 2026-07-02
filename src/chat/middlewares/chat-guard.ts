@@ -37,8 +37,8 @@ export async function chatGuard(request: FastifyRequest, reply: FastifyReply) {
 
   // 1. Prompt Injection Guard
   if (isPromptInjection(message)) {
-    return reply.status(400).send({ 
-      error: "Prompt injection detected. Please ask relevant questions about Aditya's background and projects." 
+    return reply.status(400).send({
+      error: "Prompt injection detected. Please ask relevant questions about Aditya's background and projects."
     });
   }
 
@@ -50,7 +50,7 @@ export async function chatGuard(request: FastifyRequest, reply: FastifyReply) {
     // 2. Sliding Window Rate Limiter using Redis Sorted Set
     const uniqueMember = `${now}-${Math.random()}`;
     const pipeline = redis.pipeline();
-    
+
     pipeline.zadd(rateLimitKey, now, uniqueMember);
     pipeline.zremrangebyscore(rateLimitKey, 0, windowStart);
     pipeline.zcard(rateLimitKey);
@@ -65,24 +65,32 @@ export async function chatGuard(request: FastifyRequest, reply: FastifyReply) {
       throw new Error("Redis pipeline execution failed");
     }
 
+    const r2 = results[2];
+    const r4 = results[4];
+    const r5 = results[5];
+
+    if (!r2 || !r4 || !r5) {
+      throw new Error("Redis pipeline results are incomplete");
+    }
+
     // Parse rate limit count from zcard results[2]
-    const zcardErr = results[2][0];
-    const rateCount = results[2][1] as number;
+    const zcardErr = r2[0];
+    const rateCount = r2[1] as number;
     if (zcardErr) throw zcardErr;
 
     if (rateCount > RATE_LIMIT_MAX) {
-      return reply.status(429).send({ 
-        error: "Too many requests. Please slow down and try again in a minute." 
+      return reply.status(429).send({
+        error: "Too many requests. Please slow down and try again in a minute."
       });
     }
 
     // Parse quota from get results[4] and ttl results[5]
-    const quotaGetErr = results[4][0];
-    const quotaCountVal = results[4][1] as string | null;
+    const quotaGetErr = r4[0];
+    const quotaCountVal = r4[1] as string | null;
     if (quotaGetErr) throw quotaGetErr;
 
-    const quotaTtlErr = results[5][0];
-    const quotaTtl = results[5][1] as number;
+    const quotaTtlErr = r5[0];
+    const quotaTtl = r5[1] as number;
     if (quotaTtlErr) throw quotaTtlErr;
 
     const quotaCount = quotaCountVal ? parseInt(quotaCountVal, 10) : 0;
@@ -91,8 +99,8 @@ export async function chatGuard(request: FastifyRequest, reply: FastifyReply) {
       // Calculate remaining hours
       const secondsLeft = quotaTtl > 0 ? quotaTtl : QUOTA_WINDOW;
       const hoursLeft = Math.ceil(secondsLeft / 3600);
-      return reply.status(403).send({ 
-        error: `You have reached your daily quota of ${QUOTA_MAX} messages. Please try again in ${hoursLeft} hours.` 
+      return reply.status(403).send({
+        error: `You have reached your daily quota of ${QUOTA_MAX} messages. Please try again in ${hoursLeft} hours.`
       });
     }
 

@@ -1,6 +1,6 @@
 import type { FastifyInstance } from "fastify"
-import { CREATE_USER_SCHEMA, FORGET_PASSWORD_SCHEMA, ME_USER_SCHEMA, RESET_PASSWORD_SCHEMA } from "./schemas/auth-schemas"
-import { CREATE_USER, FORGOT_PASSWORD, LOGIN_USER, LOGOUT, ME_API, RESET_PASSWORD } from "./controllers/auth-controllers"
+import { CREATE_USER_SCHEMA, FORGET_PASSWORD_SCHEMA, ME_USER_SCHEMA, RESET_PASSWORD_SCHEMA } from "./schemas/auth-schemas.js"
+import { CREATE_USER, FORGOT_PASSWORD, LOGIN_USER, LOGOUT, ME_API, RESET_PASSWORD } from "./controllers/auth-controllers.js"
 
 export default async function searchAndFindRoutes(fastify: FastifyInstance) {
     fastify.route({ method: 'POST', url: '/create', schema: CREATE_USER_SCHEMA, handler: CREATE_USER })

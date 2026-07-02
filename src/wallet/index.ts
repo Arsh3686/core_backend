@@ -1,5 +1,5 @@
 import type { FastifyInstance } from "fastify";
-import { PROCESS_WALLET, WALLET_RECEIPT } from "./controllers/wallet-controllers";
+import { PROCESS_WALLET, WALLET_RECEIPT } from "./controllers/wallet-controllers.js";
 
 export default async function walletRoutes(fastify: FastifyInstance) {
     fastify.route({ method: 'POST', url: '/process', handler: PROCESS_WALLET });

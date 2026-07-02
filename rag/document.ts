@@ -1,12 +1,14 @@
 import { Document } from "@langchain/core/documents";
-import { portfolioData } from "../data/about";
+import { portfolioData } from "../data/about.js";
 
 export function convertPortfolioToDocuments() {
     const docs: Document[] = [];
+    const ids: string[] = []
 
     /* ---------------- Experience ---------------- */
 
     portfolioData.experience.forEach((exp) => {
+        ids.push(`experience-${exp.id}`)
         docs.push(
             new Document({
                 pageContent: `
@@ -28,6 +30,7 @@ export function convertPortfolioToDocuments() {
     /* ---------------- Projects ---------------- */
 
     portfolioData.projects.forEach((project) => {
+        ids.push(`project-${project.id}`)
         docs.push(
             new Document({
                 pageContent: `
@@ -50,6 +53,7 @@ export function convertPortfolioToDocuments() {
 
     /* ---------------- Skills ---------------- */
 
+    ids.push(`skills`)
     docs.push(
         new Document({
             pageContent: `
@@ -86,6 +90,7 @@ export function convertPortfolioToDocuments() {
     /* ---------------- Education ---------------- */
 
     portfolioData.education.forEach((edu) => {
+        ids.push(`education-${edu.id}`)
         docs.push(
             new Document({
                 pageContent: `
@@ -111,5 +116,17 @@ export function convertPortfolioToDocuments() {
         );
     });
 
-    return docs;
+    return { docs, ids };
 }
+
+const dummyData = [
+    new Document({
+        pageContent: `This is the dummy data for testing`,
+        metadata: {
+            type: "about",
+            id: `about`
+        }
+    })
+]
+
+export { dummyData };

@@ -1,12 +1,12 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
-import type { CREATE_USER_SCHEMA_TYPE, FORGET_PASSWORD_TYPE, LOGIN_USER_SCHEMA_TYPE, ME_USER_SCHEMA_TYPE, RESET_PASSWORD_TYPE } from "../types";
-import { checkIfUniqueConstraintsExistOrNot } from "@core/utils/uniqueConstraints";
-import { INSERT_DATA_IN_TABLE, UPDATE_DATA_IN_TABLE } from "../services/auth-services";
-import { buildDynamicQuery } from "@core/helper/helper-function";
-import { generateTokens } from "@core/utils/tokens";
-import { ControllerError } from "@core/errors/BasicError";
-import { hashPassword, verifyPassword } from "@core/utils/password-hashing";
-import { generateOTP } from "@core/core_services/email";
+import type { CREATE_USER_SCHEMA_TYPE, FORGET_PASSWORD_TYPE, LOGIN_USER_SCHEMA_TYPE, ME_USER_SCHEMA_TYPE, RESET_PASSWORD_TYPE } from "../types.js";
+import { checkIfUniqueConstraintsExistOrNot } from "@core/utils/uniqueConstraints.js";
+import { INSERT_DATA_IN_TABLE, UPDATE_DATA_IN_TABLE } from "../services/auth-services.js";
+import { buildDynamicQuery } from "@core/helper/helper-function.js";
+import { generateTokens } from "@core/utils/tokens.js";
+import { ControllerError } from "@core/errors/BasicError.js";
+import { hashPassword, verifyPassword } from "@core/utils/password-hashing.js";
+import { generateOTP } from "@core/core_services/email.js";
 // import { sendEmail } from "@core/core_services/mailgun";
 import jwt from "jsonwebtoken";
 
